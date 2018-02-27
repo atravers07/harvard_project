@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 
-def main():
-	#f=open("text.txt","r")
-	my_dictionnary={}
-	ponctuation_list=[",","?",";",".",":","/","!","'","(",")","[","]"]
-	with open('text.txt','r') as my_file:
-		contenu=my_file.read()
-		print(contenu)
-	for char in ponctuation_list:
-		contenu2=my_file.replace(char,' ')
-		print(contenu2)
-	#f=f.lover()
-	#	for line in my_file:
-	#		words=line.split()
-		for word in contenu:
-			if word in my_dictionnary:
-				my_dictionnary[word]+=1
-			else:
-				my_dictionnary[word]=1	
-		for cle in my_dictionnary:
-			print(cle)
-	
+import re						#for regular expressions
+from collections import Counter	#to use counter() function
+import json						#to use json file
 
-if __name__=="__main__":
-	main()
+
+def main():
+
+	my_dic = {}					#dictionnary creation
+	words = re.findall('\w+', open('text.txt').read().lower())	#to find words without punctuation, in small letters
+	my_dic = Counter(words)		#to put counter dictionnary in my_dic
+	for k in my_dic.keys():		#to have each word's frequency
+		my_dic[k]/= len(words)
+	#print(my_dic)
+	with open('destination.json','w') as fp:	
+		json.dump(my_dic, fp)
+
+
+if __name__ == "__main__":
+    main()
 
